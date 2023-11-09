@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Linq;
+using Azure.Core;
 
 namespace VerifyEmailForgotPasswordTutorial.Controllers
 {
@@ -29,9 +30,11 @@ namespace VerifyEmailForgotPasswordTutorial.Controllers
             {
                 StoreEmail = request.StoreEmail,
                 MenuItemName = request.MenuItemName,
-                MenuItemId = request.MenuItemId,
+                MenuItemId = CreateRandomToken(),
+                MenuItemDescription = request.MenuItemDescription,
+                MenuItemImageLink = request.MenuItemImageLink,
                 MenuItemCategory = request.MenuItemCategory,
-                MenuItemCount = request.MenuItemCount,
+                MenuItemIsAvaliable = request.MenuItemIsAvaliable,
                 MenuItemPrice = request.MenuItemPrice,
                 
             };
@@ -65,6 +68,19 @@ namespace VerifyEmailForgotPasswordTutorial.Controllers
             return Ok("Menu item deleted successfully.");
         }
 
+        [HttpGet("get-all")]
+        public IActionResult GetAllMenus()
+        {
+            
+
+            
+
+            var menus = _context.Menus.ToList();
+
+            return Ok(menus);
+        }
+
+
         [HttpPost("update")]
         public IActionResult UpdateMenuItem([FromBody] CreateMenuItemRequest request)
         {
@@ -84,13 +100,20 @@ namespace VerifyEmailForgotPasswordTutorial.Controllers
 
             // Update the properties as needed
             itemToUpdate.MenuItemName = request.MenuItemName;
+            itemToUpdate.MenuItemDescription = request.MenuItemDescription;
+            itemToUpdate.MenuItemImageLink = request.MenuItemImageLink;
             itemToUpdate.MenuItemCategory = request.MenuItemCategory;
             itemToUpdate.MenuItemPrice = request.MenuItemPrice;
-            itemToUpdate.MenuItemCount = request.MenuItemCount;
+            itemToUpdate.MenuItemIsAvaliable = request.MenuItemIsAvaliable;
 
             _context.SaveChanges();
 
             return Ok("Menu item updated successfully.");
+        }
+
+        private string CreateRandomToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(4));
         }
     }
 }

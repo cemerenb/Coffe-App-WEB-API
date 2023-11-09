@@ -18,7 +18,7 @@ namespace VerifyEmailForgotPasswordTutorial.Data
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Store> Stores => Set<Store>();
-
+        public DbSet<Order> Orders => Set<Order>();
         public DbSet<Menu>  Menus => Set<Menu>();
     }
 }

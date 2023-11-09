@@ -9,10 +9,16 @@ namespace VerifyEmailForgotPasswordTutorial.Models
         [Required]
         public string MenuItemName { get; set; } = string.Empty;
         [Required]
+        public string MenuItemDescription { get; set; } = string.Empty;
+        [Required]
+        public string MenuItemImageLink { get; set; } = string.Empty;
+
+
+        [Required]
         public string MenuItemId { get; set; } = string.Empty;
 
         [Required]
-        public int MenuItemCount { get; set; } = 0;
+        public int MenuItemIsAvaliable { get; set; } = 0;
 
         [Required]
         public float MenuItemPrice { get; set; }

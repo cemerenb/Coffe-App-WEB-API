@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
 namespace VerifyEmailForgotPasswordTutorial.Controllers
@@ -26,7 +27,7 @@ namespace VerifyEmailForgotPasswordTutorial.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> StoreRegister(StoreRegisterRequest request)
         {
-            if (_context.Stores.Any(u => u.StoreEmail == request.StoreEmail))
+            if (_context.Stores.Any(u => u.StoreEmail == request.StoreEmail) || _context.Stores.Any(u => u.StoreName == request.StoreName))
             {
                 return BadRequest("User already exists.");
             }
@@ -46,8 +47,11 @@ namespace VerifyEmailForgotPasswordTutorial.Controllers
 
             _context.Stores.Add(store);
             await _context.SaveChangesAsync();
-
+            _context.Database.ExecuteSqlRaw($"CREATE TABLE {request.StoreName.Replace(" ", "_")}_Orders (OrderId INT PRIMARY KEY, Owner NVARCHAR(MAX), Store NVARCHAR(MAX),OrderDate DATETIME, TotalPrice DECIMAL);");
+            _context.Database.ExecuteSqlRaw($"CREATE TABLE {request.StoreName.Replace(" ", "_")}_Orders_Details (OrderId INT PRIMARY KEY,ProductQuantity INT,ProductName NVARCHAR(MAX), ProductId NVARCHAR(MAX), Price DECIMAL);");
+            _context.Database.ExecuteSqlRaw($"CREATE TABLE {request.StoreName.Replace(" ", "_")}_Menu (MenuId INT IDENTITY(1,1) PRIMARY KEY,StoreEmail NVARCHAR(MAX) NOT NULL,MenuItemName NVARCHAR(MAX) NOT NULL,MenuItemDescription NVARCHAR(MAX) NOT NULL,MenuItemImageLink NVARCHAR(MAX) NOT NULL,MenuItemId NVARCHAR(MAX) NOT NULL,MenuItemIsAvaliable INT NOT NULL,MenuItemPrice REAL NOT NULL,MenuItemCategory INT NOT NULL);");
             return Ok("Store successfully created!");
+
         }
 
         [HttpPut("update")]
@@ -126,7 +130,12 @@ namespace VerifyEmailForgotPasswordTutorial.Controllers
 
             return Ok("Password successfully reset.");
         }
-
+        [HttpGet("{storeEmail}/orders")]
+        public async Task<IActionResult> GetAllOrdersForStore(string storeEmail)
+        {
+            var orders = await _context.Orders.Where(o => o.Store == storeEmail).ToListAsync();
+            return Ok(orders);
+        }
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())

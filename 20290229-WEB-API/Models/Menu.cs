@@ -7,9 +7,13 @@ namespace VerifyEmailForgotPasswordTutorial.Models
         public int MenuId { get; set; }
         public string StoreEmail { get; set; } = string.Empty;
         public string MenuItemName { get; set; } = string.Empty;
+
+        public string MenuItemDescription { get; set; } = string.Empty;
+
+        public string MenuItemImageLink {  get; set; } = string.Empty;
         public string MenuItemId { get; set; } = string.Empty;
 
-        public int MenuItemCount { get; set; } = 0;
+        public int MenuItemIsAvaliable { get; set; } = 0;
 
         public float MenuItemPrice { get; set; }
 

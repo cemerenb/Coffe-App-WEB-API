@@ -22,39 +22,7 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.Menu", b =>
-                {
-                    b.Property<int>("MenuId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
-
-                    b.Property<int>("MenuItemCategory")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MenuItemCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MenuItemId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MenuItemName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("MenuItemPrice")
-                        .HasColumnType("real");
-
-                    b.Property<string>("StoreEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MenuId");
-
-                    b.ToTable("Menus");
-                });
+            
 
             modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.Store", b =>
                 {
