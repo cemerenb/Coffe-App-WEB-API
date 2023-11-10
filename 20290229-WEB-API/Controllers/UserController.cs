@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
-namespace VerifyEmailForgotPasswordTutorial.Controllers
+namespace cemerenbwebapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

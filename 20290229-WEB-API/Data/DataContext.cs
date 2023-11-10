@@ -1,6 +1,6 @@
 ﻿
 
-namespace VerifyEmailForgotPasswordTutorial.Data
+namespace cemerenbwebapi.Data
 {
     public class DataContext : DbContext
     {

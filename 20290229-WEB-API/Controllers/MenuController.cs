@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Linq;
 using Azure.Core;
 
-namespace VerifyEmailForgotPasswordTutorial.Controllers
+namespace cemerenbwebapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

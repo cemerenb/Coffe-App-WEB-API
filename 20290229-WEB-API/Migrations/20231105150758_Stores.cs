@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace VerifyEmailForgotPasswordTutorial.Migrations
+namespace cemerenbwebapi.Migrations
 {
     /// <inheritdoc />
     public partial class Stores : Migration

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using VerifyEmailForgotPasswordTutorial.Data;
+using cemerenbwebapi.Data;
 
 #nullable disable
 
-namespace VerifyEmailForgotPasswordTutorial.Migrations
+namespace cemerenbwebapi.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20231105150758_Stores")]
@@ -25,7 +25,7 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.Store", b =>
+            modelBuilder.Entity("cemerenbwebapi.Models.Store", b =>
                 {
                     b.Property<int>("StoreId")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.User", b =>
+            modelBuilder.Entity("cemerenbwebapi.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

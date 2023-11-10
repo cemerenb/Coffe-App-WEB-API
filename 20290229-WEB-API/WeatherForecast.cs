@@ -1,4 +1,4 @@
-namespace VerifyEmailForgotPasswordTutorial
+namespace cemerenbwebapi
 {
     public class WeatherForecast
     {

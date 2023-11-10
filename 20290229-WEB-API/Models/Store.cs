@@ -1,4 +1,4 @@
-﻿namespace VerifyEmailForgotPasswordTutorial.Models
+﻿namespace cemerenbwebapi.Models
 {
     public class Store
     {

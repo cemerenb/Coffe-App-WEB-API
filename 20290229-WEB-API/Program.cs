@@ -1,6 +1,6 @@
 global using Microsoft.EntityFrameworkCore;
-global using VerifyEmailForgotPasswordTutorial.Models;
-global using VerifyEmailForgotPasswordTutorial.Data;
+global using cemerenbwebapi.Models;
+global using cemerenbwebapi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

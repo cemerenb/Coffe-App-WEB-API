@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VerifyEmailForgotPasswordTutorial.Models
+namespace cemerenbwebapi.Models
 {
     public class UpdateMenuItemRequest
     {

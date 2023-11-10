@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cemerenbwebapi.Data;
 
 #nullable disable
 
-namespace cemerenbwebapi.Migrations
+namespace VerifyEmailForgotPasswordTutorial.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231107153438_Menus")]
+    partial class Menus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,9 +25,47 @@ namespace cemerenbwebapi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            
+            modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.Menu", b =>
+                {
+                    b.Property<int>("MenuId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-            modelBuilder.Entity("cemerenbwebapi.Models.Store", b =>
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
+
+                    b.Property<int>("MenuItemCategory")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuItemIsAvaliable")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MenuItemId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MenuItemName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("MenuItemDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("MenuItemImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("MenuItemPrice")
+                        .HasColumnType("real");
+
+                    b.Property<string>("StoreEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MenuId");
+
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.Store", b =>
                 {
                     b.Property<int>("StoreId")
                         .ValueGeneratedOnAdd()
@@ -39,8 +80,6 @@ namespace cemerenbwebapi.Migrations
                     b.Property<string>("StoreName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StoreLogoLink").IsRequired().HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("StorePasswordHash")
                         .IsRequired()
@@ -60,12 +99,18 @@ namespace cemerenbwebapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StoreVerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StoreVerifiedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("StoreId");
 
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("cemerenbwebapi.Models.User", b =>
+            modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,6 +143,12 @@ namespace cemerenbwebapi.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

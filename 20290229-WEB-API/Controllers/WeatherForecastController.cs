@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace VerifyEmailForgotPasswordTutorial.Controllers
+namespace cemerenbwebapi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
