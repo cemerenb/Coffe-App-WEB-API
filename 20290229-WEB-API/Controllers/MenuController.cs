@@ -36,7 +36,7 @@ namespace cemerenbwebapi.Controllers
                 MenuItemCategory = request.MenuItemCategory,
                 MenuItemIsAvaliable = request.MenuItemIsAvaliable,
                 MenuItemPrice = request.MenuItemPrice,
-                
+
             };
 
             _context.Menus.Add(newItem);
@@ -71,9 +71,9 @@ namespace cemerenbwebapi.Controllers
         [HttpGet("get-all")]
         public IActionResult GetAllMenus()
         {
-            
 
-            
+
+
 
             var menus = _context.Menus.ToList();
 
