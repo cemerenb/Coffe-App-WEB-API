@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Linq;
 using Azure.Core;
+using Microsoft.AspNetCore.Cors;
 
 namespace cemerenbwebapi.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class MenuController : ControllerBase

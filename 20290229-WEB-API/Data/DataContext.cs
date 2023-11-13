@@ -13,7 +13,7 @@ namespace cemerenbwebapi.Data
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder
-                .UseSqlServer("Server=.\\SQLExpress;Database=FullStackWithFlutter;User Id=sa; Password=P@ssword1;Trusted_Connection=true;TrustServerCertificate=True");
+                .UseSqlServer("Server=.\\SQLExpress;Database=cemerenb;User Id=sa; Password=P@ssword1;Trusted_Connection=true;TrustServerCertificate=True");
         }
 
         public DbSet<User> Users => Set<User>();
