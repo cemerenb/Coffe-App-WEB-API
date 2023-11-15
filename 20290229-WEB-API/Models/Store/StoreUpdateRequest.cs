@@ -15,6 +15,9 @@ namespace Models.Store
         public string StoreLogoLink { get; set; } = string.Empty;
 
         [Required]
+        public string StoreCoverImageLink { get; set; } = string.Empty;
+
+        [Required]
         public string StoreOpeningTime { get; set; } = string.Empty;
 
         [Required]

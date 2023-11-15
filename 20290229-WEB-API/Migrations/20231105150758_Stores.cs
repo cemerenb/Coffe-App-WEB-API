@@ -20,6 +20,8 @@ namespace cemerenbwebapi.Migrations
                     StoreName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StoreTaxId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StoreLogoLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StoreCoverImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+
                     StoreIsOn = table.Column<int>(type: "int", nullable: false),
                     StoreOpeningTime = table.Column<string> (type:"nvarchar(max)", nullable: false),
                     StoreClosingTime = table.Column<string>(type: "nvarchar(max)", nullable: false),

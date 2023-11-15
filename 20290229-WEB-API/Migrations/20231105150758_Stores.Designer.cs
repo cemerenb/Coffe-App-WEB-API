@@ -45,6 +45,7 @@ namespace cemerenbwebapi.Migrations
                     b.Property<string>("StoreClosingTime").IsRequired().HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StoreLogoLink").IsRequired().HasColumnType("nvarchar(max)");
+                    b.Property<string>("StoreCoverImageLink").IsRequired().HasColumnType("nvarchar(max)");
                     b.Property<byte[]>("StorePasswordHash")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");

@@ -141,6 +141,7 @@ namespace cemerenbwebapi.Migrations
                     b.Property<string>("StoreLogoLink")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+                    b.Property<string>("StoreCoverImageLink").IsRequired().HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StoreName")
                         .IsRequired()

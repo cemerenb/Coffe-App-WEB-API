@@ -65,6 +65,7 @@ namespace cemerenbwebapi.Controllers
 
             
             store.StoreLogoLink = request.StoreLogoLink;
+            store.StoreCoverImageLink = request.StoreCoverImageLink;
             store.StoreOpeningTime = request.StoreOpeningTime;
             store.StoreClosingTime = request.StoreClosingTime;
 

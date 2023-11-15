@@ -6,6 +6,7 @@
         public string StoreEmail { get; set; } = string.Empty;
         public string StoreName { get; set; } = string.Empty;
         public string StoreLogoLink { get; set; } = string.Empty;
+        public string StoreCoverImageLink { get; set; } = string.Empty;
         public string StoreOpeningTime { get; set; } = string.Empty;
         public string StoreClosingTime { get; set; } = string.Empty;
         public int StoreIsOn { get; set; }
