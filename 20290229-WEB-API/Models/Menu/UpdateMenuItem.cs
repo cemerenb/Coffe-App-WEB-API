@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cemerenbwebapi.Models
+namespace Models.Menu
 {
     public class UpdateMenuItemRequest
     {
@@ -13,7 +13,7 @@ namespace cemerenbwebapi.Models
         [Required]
         public int MenuItemCount { get; set; } = 0;
 
-        [Required] 
+        [Required]
         public float MenuItemPrice { get; set; }
 
         [Required]

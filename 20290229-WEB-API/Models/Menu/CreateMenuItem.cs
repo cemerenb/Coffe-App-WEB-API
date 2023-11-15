@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cemerenbwebapi.Models
+namespace Models.Menu
 {
     public class CreateMenuItemRequest
     {
@@ -11,10 +11,10 @@ namespace cemerenbwebapi.Models
         [Required]
         public string MenuItemId { get; set; } = string.Empty;
         [Required]
-        public string MenuItemImageLink {  get; set; } = string.Empty;
+        public string MenuItemImageLink { get; set; } = string.Empty;
         [Required]
         public string MenuItemDescription { get; set; } = string.Empty;
-        
+
         [Required]
         public int MenuItemIsAvaliable { get; set; } = 0;
 
@@ -22,6 +22,6 @@ namespace cemerenbwebapi.Models
         public float MenuItemPrice { get; set; }
 
         [Required]
-        public int MenuItemCategory {  get; set; }
+        public int MenuItemCategory { get; set; }
     }
 }

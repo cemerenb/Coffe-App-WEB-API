@@ -1,5 +1,10 @@
 ﻿
 
+using Models.Menu;
+using Models.Rating;
+using Models.Store;
+using Models.User;
+
 namespace cemerenbwebapi.Data
 {
     public class DataContext : DbContext
@@ -18,7 +23,7 @@ namespace cemerenbwebapi.Data
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Store> Stores => Set<Store>();
-
+        public DbSet<Rating> Ratings => Set<Rating>();
         public DbSet<Menu>  Menus => Set<Menu>();
     }
 }

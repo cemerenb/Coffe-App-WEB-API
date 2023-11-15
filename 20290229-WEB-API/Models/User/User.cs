@@ -1,4 +1,4 @@
-﻿namespace cemerenbwebapi.Models
+﻿namespace Models.User
 {
     public class User
     {

@@ -22,7 +22,7 @@ namespace cemerenbwebapi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("VerifyEmailForgotPasswordTutorial.Models.Menu", b =>
+            modelBuilder.Entity("Models.Menu.Menu", b =>
                 {
                     b.Property<int>("MenuId")
                         .ValueGeneratedOnAdd()
@@ -33,12 +33,20 @@ namespace cemerenbwebapi.Migrations
                     b.Property<int>("MenuItemCategory")
                         .HasColumnType("int");
 
-                    b.Property<int>("MenuItemCount")
-                        .HasColumnType("int");
+                    b.Property<string>("MenuItemDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MenuItemId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MenuItemImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MenuItemIsAvaliable")
+                        .HasColumnType("int");
 
                     b.Property<string>("MenuItemName")
                         .IsRequired()
@@ -56,13 +64,39 @@ namespace cemerenbwebapi.Migrations
                     b.ToTable("Menus");
                 });
 
-            modelBuilder.Entity("cemerenbwebapi.Models.Store", b =>
+            modelBuilder.Entity("Models.Rating.Rating", b =>
                 {
-                    b.Property<int>("StoreId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StoreId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IsRatingDisplayed")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RatingDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RatingDisabledComment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RatingId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RatingPoint")
+                        .HasColumnType("int");
 
                     b.Property<string>("StoreEmail")
                         .IsRequired()
@@ -72,7 +106,49 @@ namespace cemerenbwebapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StoreLogoLink").IsRequired().HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ratings");
+                });
+
+            modelBuilder.Entity("Models.Store.Store", b =>
+                {
+                    b.Property<int>("StoreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StoreId"));
+
+                    b.Property<string>("StoreClosingTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StoreIsOn")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StoreLogoLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreOpeningTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("StorePasswordHash")
                         .IsRequired()
@@ -97,7 +173,7 @@ namespace cemerenbwebapi.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("cemerenbwebapi.Models.User", b =>
+            modelBuilder.Entity("Models.User.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -110,7 +186,6 @@ namespace cemerenbwebapi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
@@ -128,7 +203,6 @@ namespace cemerenbwebapi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

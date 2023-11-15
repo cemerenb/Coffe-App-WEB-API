@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cemerenbwebapi.Models
+namespace Models.Menu
 {
     public class Menu
     {
@@ -9,7 +9,7 @@ namespace cemerenbwebapi.Models
         public string MenuItemName { get; set; } = string.Empty;
 
         public string MenuItemDescription { get; set; } = string.Empty;
-        public int MenuItemCategory {  get; set; }
+        public int MenuItemCategory { get; set; }
         public string MenuItemImageLink { get; set; } = string.Empty;
         public string MenuItemId { get; set; } = string.Empty;
 

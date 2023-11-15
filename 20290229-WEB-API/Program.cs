@@ -1,5 +1,5 @@
 global using Microsoft.EntityFrameworkCore;
-global using cemerenbwebapi.Models;
+global using Models.Store;
 global using cemerenbwebapi.Data;
 
 var builder = WebApplication.CreateBuilder(args);

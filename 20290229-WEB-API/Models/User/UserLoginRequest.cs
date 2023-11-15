@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cemerenbwebapi.Models
+namespace Models.User
 {
     public class UserLoginRequest
     {

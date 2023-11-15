@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cemerenbwebapi.Models
+namespace Models.Store
 {
     public class StoreUpdateRequest
     {
-        
 
-        [Required]
-        public int StoreIsOn { get; set; }
+
+       
 
         [Required, EmailAddress]
         public string StoreEmail { get; set; } = string.Empty;
@@ -21,7 +20,7 @@ namespace cemerenbwebapi.Models
         [Required]
         public string StoreClosingTime { get; set; } = string.Empty;
 
-       
+
 
 
     }

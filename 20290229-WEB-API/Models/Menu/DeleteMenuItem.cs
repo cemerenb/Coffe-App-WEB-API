@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cemerenbwebapi.Models
+namespace Models.Menu
 {
-    public class StoreLoginRequest
+    public class DeleteMenuItemRequest
     {
         [Required, EmailAddress]
         public string StoreEmail { get; set; } = string.Empty;
+
         [Required]
-        public string StorePassword { get; set; } = string.Empty;
+        public string MenuItemId { get; set; } = string.Empty;
+
     }
 }

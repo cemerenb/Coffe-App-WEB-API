@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.User;
 using System.Security.Cryptography;
 
 namespace cemerenbwebapi.Controllers
