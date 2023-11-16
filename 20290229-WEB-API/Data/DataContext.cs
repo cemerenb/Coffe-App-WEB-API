@@ -1,6 +1,8 @@
 ﻿
 
+using Models.Cart;
 using Models.Menu;
+using Models.Order;
 using Models.Rating;
 using Models.Store;
 using Models.User;
@@ -24,6 +26,8 @@ namespace cemerenbwebapi.Data
         public DbSet<User> Users => Set<User>();
         public DbSet<Store> Stores => Set<Store>();
         public DbSet<Rating> Ratings => Set<Rating>();
-        public DbSet<Menu>  Menus => Set<Menu>();
+        public DbSet<Menu> Menus => Set<Menu>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<Cart> Carts => Set<Cart>();
     }
 }

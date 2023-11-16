@@ -74,10 +74,6 @@ namespace cemerenbwebapi.Controllers
         [HttpGet("get-all")]
         public IActionResult GetAllMenus()
         {
-
-
-
-
             var menus = _context.Menus.ToList();
 
             return Ok(menus);

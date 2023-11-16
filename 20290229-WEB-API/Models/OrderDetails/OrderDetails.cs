@@ -2,7 +2,7 @@
 
 namespace Models.Order
 {
-    public class Order
+    public class OrderDetails
     {
         public int Id { get; set; }
         public string StoreEmail { get; set; } = string.Empty;
