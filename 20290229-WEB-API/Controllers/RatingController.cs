@@ -27,7 +27,6 @@ namespace cemerenbwebapi.Controllers
 
 
 
-
         [HttpPost("add-rating")]
         public async Task<IActionResult> AddRating(AddRatings request)
         {
@@ -79,23 +78,7 @@ namespace cemerenbwebapi.Controllers
             return Ok("Store updated successfully!");
         }
 
-        [HttpPut("toggle-store")]
-        public async Task<IActionResult> ToggleIsActive(StoreToggleIsOn request)
-        {
-            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
-            if (store == null)
-            {
-                return NotFound("Store not found.");
-            }
-
-
-            store.StoreIsOn = request.StoreIsOn;
-
-            _context.Stores.Update(store);
-            await _context.SaveChangesAsync();
-
-            return Ok("Store updated successfully!");
-        }
+       
 
         private string CreateRandomToken()
         {

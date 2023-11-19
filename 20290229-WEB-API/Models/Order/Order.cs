@@ -13,7 +13,7 @@ namespace Models.Order
         public string OrderNote { get; set; } = string.Empty;
 
         public string OrderCreatingTime { get; set; } = string.Empty;
-
+        public int ItemCount { get; set; }
         public double OrderTotalPrice { get; set; }
     }
 }

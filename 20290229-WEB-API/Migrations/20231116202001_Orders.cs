@@ -44,6 +44,23 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                 });
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StoreEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MenuItemId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemCount = table.Column<int>(type: "int", nullable: false)
+
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -54,6 +71,9 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "OrderDetails");
         }
     }
 }

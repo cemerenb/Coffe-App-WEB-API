@@ -277,6 +277,38 @@ namespace cemerenbwebapi.Migrations
 
                     b.ToTable("Users");
                 });
+
+            modelBuilder.Entity("Models.OrderDetail.OrderDetail", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<string>("OrderId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<int>("ItemCount")
+                    .HasColumnType("int");
+
+                b.Property<string>("MenuItemId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("StoreEmail")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("UserEmail")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.HasKey("Id");
+
+                b.ToTable("OrderDetails");
+            });
 #pragma warning restore 612, 618
         }
     }

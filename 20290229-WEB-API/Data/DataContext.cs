@@ -3,6 +3,7 @@
 using Models.Cart;
 using Models.Menu;
 using Models.Order;
+using Models.OrderDetail;
 using Models.Rating;
 using Models.Store;
 using Models.User;
@@ -29,5 +30,6 @@ namespace cemerenbwebapi.Data
         public DbSet<Menu> Menus => Set<Menu>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<Cart> Carts => Set<Cart>();
+        public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
     }
 }

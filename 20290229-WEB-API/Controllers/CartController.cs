@@ -38,13 +38,35 @@ namespace cemerenbwebapi.Controllers
                     return NotFound("No carts found for the specified user email.");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("get-item-info")]
+        public async Task<IActionResult> GetItemInfo([FromQuery] GetItemInfo request)
+        {
+            try
+            {
+                var matchedCart = await _context.Carts.Where(u => u.UserEmail == request.UserEmail && u.MenuItemId == request.MenuItemId).ToListAsync();
+
+                if (matchedCart != null && matchedCart.Any())
+                {
+                    return Ok(matchedCart);
+                }
+                else
+                {
+                    return NotFound("No carts found for the specified user email.");
+                }
+            }
+            catch (Exception)
             {
                 return StatusCode(500, "Internal server error");
             }
         }
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateCart([FromQuery] UpdateCart request)
+        public async Task<IActionResult> UpdateCart(UpdateCart request)
         {
             try
             {
@@ -65,7 +87,7 @@ namespace cemerenbwebapi.Controllers
 
                 return Ok("Cart item updated successfully");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, "Internal server error");
             }
@@ -88,6 +110,7 @@ namespace cemerenbwebapi.Controllers
                 StoreEmail = request.StoreEmail,
                 UserEmail = request.UserEmail,
                 MenuItemId = request.MenuItemId,
+                ItemCount = 1,
 
             };
 
