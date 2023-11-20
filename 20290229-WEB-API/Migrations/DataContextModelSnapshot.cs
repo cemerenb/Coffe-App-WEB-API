@@ -118,6 +118,8 @@ namespace cemerenbwebapi.Migrations
                     b.Property<string>("StoreEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ItemCount")
+                       .HasColumnType("int");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()

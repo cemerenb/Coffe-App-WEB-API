@@ -122,6 +122,9 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ItemCount")
+                       .HasColumnType("int");
+
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

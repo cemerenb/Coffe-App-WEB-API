@@ -38,12 +38,14 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
                     OrderStatus = table.Column<int>(type: "int", nullable: false),
                     OrderNote = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderCreatingTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemCount = table.Column<int>(type: "int", nullable: false),
                     OrderTotalPrice = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new

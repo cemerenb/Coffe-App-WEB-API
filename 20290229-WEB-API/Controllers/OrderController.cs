@@ -38,6 +38,7 @@ namespace cemerenbwebapi.Controllers
                 OrderStatus = request.OrderStatus,
                 OrderNote = request.OrderNote,
                 OrderCreatingTime = request.OrderCreatingTime,
+                ItemCount = request.ItemCount,
                 OrderTotalPrice = request.OrderTotalPrice,
             };
 
