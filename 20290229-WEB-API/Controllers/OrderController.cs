@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models.Order;
 using System.Security.Cryptography;
 
@@ -23,6 +25,46 @@ namespace cemerenbwebapi.Controllers
         {
             var orders = await _context.Orders.ToListAsync();
             return Ok(orders);
+        }
+
+        [HttpGet("get-user-orders")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders([FromQuery] string UserEmail)
+        {
+            if (string.IsNullOrEmpty(UserEmail))
+            {
+                return BadRequest("User email parameter is required");
+            }
+
+            var orders = await _context.Orders
+                .Where(o => o.UserEmail ==  UserEmail)
+                .ToListAsync();
+
+            if (orders == null || !orders.Any())
+            {
+                return NotFound("No orders found for the specified " + UserEmail);
+            }
+
+            return orders;
+        }
+
+        [HttpGet("get-store-orders")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetStoreOrders([FromQuery] string StoreEmail)
+        {
+            if (string.IsNullOrEmpty(StoreEmail))
+            {
+                return BadRequest("User email parameter is required");
+            }
+
+            var orders = await _context.Orders
+                .Where(o => o.StoreEmail == StoreEmail)
+                .ToListAsync();
+
+            if (orders == null || !orders.Any())
+            {
+                return NotFound("No orders found for the specified " + StoreEmail);
+            }
+
+            return orders;
         }
 
 
