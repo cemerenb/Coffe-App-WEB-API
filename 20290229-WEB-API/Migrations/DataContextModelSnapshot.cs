@@ -113,7 +113,7 @@ namespace cemerenbwebapi.Migrations
                         .HasColumnType("int");
 
                     b.Property<double>("OrderTotalPrice")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<string>("StoreEmail")
                         .IsRequired()

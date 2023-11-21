@@ -39,7 +39,7 @@ namespace VerifyEmailForgotPasswordTutorial.Migrations
                     OrderNote = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderCreatingTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ItemCount = table.Column<int>(type: "int", nullable: false),
-                    OrderTotalPrice = table.Column<double>(type: "float", nullable: false)
+                    OrderTotalPrice = table.Column<double>(type: "double", nullable: false)
                 },
                 constraints: table =>
                 {
