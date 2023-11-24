@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Menu;
+using Models.OrderDetail;
 using Models.User;
 using System.Security.Cryptography;
 
@@ -16,6 +18,19 @@ namespace cemerenbwebapi.Controllers
         public UserController(DataContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("get-users-name")]
+        public IActionResult DeleteMenuItem([FromQuery] string email)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Email == email);
+          
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            
+            return Ok(user.FullName);
         }
 
         [HttpPost("register")]

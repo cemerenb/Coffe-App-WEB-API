@@ -20,21 +20,15 @@ namespace cemerenbwebapi.Controllers
         }
 
         [HttpGet("get-order-details")]
-        public async Task<ActionResult<IEnumerable<OrderDetail>>> GetUserOrders([FromQuery] string OrderId)
+        public async Task<ActionResult<IEnumerable<OrderDetail>>> GetUserOrders()
         {
-            if (string.IsNullOrEmpty(OrderId))
-            {
-                return BadRequest("Order id parameter is required");
-            }
+           
 
             var orderdetails = await _context.OrderDetails
-                .Where(o => o.OrderId == OrderId)
+                
                 .ToListAsync();
 
-            if (orderdetails == null || !orderdetails.Any())
-            {
-                return NotFound("No order details found for the specified " + OrderId);
-            }
+            
 
             return orderdetails;
         }
