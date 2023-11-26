@@ -11,6 +11,8 @@ namespace Models.OrderDetail
         public string UserEmail { get; set; } = string.Empty;
 
         public int ItemCount { get; set; }
+        public int ItemCanceled {  get; set; }
+        public string CancelNote {  get; set; } = string.Empty;
 
     }
 }
