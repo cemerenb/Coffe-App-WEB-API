@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace cemerenbwebapi.Migrations
+namespace _20290229WEBAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Users : Migration

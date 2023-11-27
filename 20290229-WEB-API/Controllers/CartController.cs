@@ -107,6 +107,7 @@ namespace cemerenbwebapi.Controllers
             // Create a new menu item from the request
             var cart = new Cart
             {
+                
                 StoreEmail = request.StoreEmail,
                 UserEmail = request.UserEmail,
                 MenuItemId = request.MenuItemId,

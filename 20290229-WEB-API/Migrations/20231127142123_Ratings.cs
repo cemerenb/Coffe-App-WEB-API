@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace VerifyEmailForgotPasswordTutorial.Migrations
+namespace _20290229WEBAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Ratings : Migration

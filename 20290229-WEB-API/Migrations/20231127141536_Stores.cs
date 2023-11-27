@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace cemerenbwebapi.Migrations
+namespace _20290229WEBAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Stores : Migration
@@ -23,7 +22,7 @@ namespace cemerenbwebapi.Migrations
                     StoreCoverImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
 
                     StoreIsOn = table.Column<int>(type: "int", nullable: false),
-                    StoreOpeningTime = table.Column<string> (type:"nvarchar(max)", nullable: false),
+                    StoreOpeningTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StoreClosingTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
 
                     StoreEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -36,6 +35,7 @@ namespace cemerenbwebapi.Migrations
                 {
                     table.PrimaryKey("PK_Stores", x => x.StoreId);
                 });
+            
         }
 
         /// <inheritdoc />

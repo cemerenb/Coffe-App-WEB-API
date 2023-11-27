@@ -4,7 +4,6 @@ namespace Models.Order
 {
     public class Order
     {
-        public int Id { get; set; }
         public string StoreEmail { get; set; } = string.Empty;
         public string OrderId { get; set; } = string.Empty;
 

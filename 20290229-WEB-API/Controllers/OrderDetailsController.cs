@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Cart;
 using Models.Order;
 using Models.OrderDetail;
 using System.Security.Cryptography;
@@ -33,6 +34,35 @@ namespace cemerenbwebapi.Controllers
             return orderdetails;
         }
 
+        [HttpPut("cancel-order-item")]
+        public async Task<IActionResult> CancelOrder(CancelOrderDetails request)
+        {
+            try
+            {
+                var matchedOrderItem = await _context.OrderDetails
+                    .Where(u => u.StoreEmail == request.StoreEmail && u.MenuItemId == request.MenuItemId && u.OrderId == request.OrderId)
+                    .ToListAsync();
+
+                if (matchedOrderItem == null || matchedOrderItem.Count == 0)
+                {
+                    return NotFound("No order found");
+                }
+
+                var item = matchedOrderItem.First();
+
+                item.ItemCanceled = request.ItemCanceled;
+                item.CancelNote = request.CancelNote;
+
+                await _context.SaveChangesAsync();
+
+                return Ok("Order item updated successfully");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [HttpPost("create-order-details")]
         public async Task<IActionResult> CreateOrder(CreateOrderDetail request)
         {
@@ -44,6 +74,7 @@ namespace cemerenbwebapi.Controllers
                 UserEmail = request.UserEmail,
                 MenuItemId = request.MenuItemId,
                 ItemCount = request.ItemCount,
+                
                 
             };
 
