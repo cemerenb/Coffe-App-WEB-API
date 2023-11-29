@@ -29,7 +29,9 @@ namespace _20290229WEBAPI.Migrations
                     StorePasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     StorePasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     StorePasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StoreResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    StoreResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Latitude = table.Column<double>(type: "double", nullable: false),
+                    Longitude = table.Column<double>(type: "double", nullable: false),
                 },
                 constraints: table =>
                 {
