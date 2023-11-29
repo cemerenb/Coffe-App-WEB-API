@@ -75,6 +75,25 @@ namespace cemerenbwebapi.Controllers
             return Ok("Store updated successfully!");
         }
 
+        [HttpPut("update-location")]
+        public async Task<IActionResult> UpdateLocationStore(StoreLocationUpdateRequest request)
+        {
+            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
+            if (store == null)
+            {
+                return NotFound("Store not found.");
+            }
+
+
+            store.Latitude = request.Latitude;
+            store.Longitude = request.Longitude;
+
+            _context.Stores.Update(store);
+            await _context.SaveChangesAsync();
+
+            return Ok("Store location updated successfully!");
+        }
+
         [HttpPut("toggle-store")]
         public async Task<IActionResult> ToggleIsActive(StoreToggleIsOn request)
         {

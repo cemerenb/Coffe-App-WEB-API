@@ -15,5 +15,8 @@
         public byte[] StorePasswordSalt { get; set; } = new byte[32];
         public string? StorePasswordResetToken { get; set; }
         public DateTime? StoreResetTokenExpires { get; set; }
+
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }
