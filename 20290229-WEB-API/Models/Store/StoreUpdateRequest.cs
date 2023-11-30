@@ -22,6 +22,11 @@ namespace Models.Store
 
         [Required]
         public string StoreClosingTime { get; set; } = string.Empty;
+        [Required]
+        public double Latitude { get; set; }
+
+        [Required]
+        public double Longitude { get; set; }
 
 
 
