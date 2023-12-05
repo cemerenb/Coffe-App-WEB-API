@@ -129,6 +129,8 @@ namespace cemerenbwebapi.Migrations
 
                 b.ToTable("Orders");
             });
+            
+
 
             modelBuilder.Entity("Models.Rating.Rating", b =>
             {
@@ -179,6 +181,72 @@ namespace cemerenbwebapi.Migrations
                 b.HasKey("Id");
 
                 b.ToTable("Ratings");
+            });
+
+            modelBuilder.Entity("Models.PointRule.PointRule", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<int>("IsPointEnabled")
+                    .IsRequired()
+                    .HasColumnType("int");
+
+                
+                b.Property<string>("StoreEmail")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<int>("PointsToGain")
+                    .IsRequired()
+                    .HasColumnType("int");
+                b.Property<int>("Category1Gain")
+                   .IsRequired()
+                   .HasColumnType("int");
+                b.Property<int>("Category2Gain")
+                   .IsRequired()
+                   .HasColumnType("int");
+                b.Property<int>("Category3Gain")
+                   .IsRequired()
+                   .HasColumnType("int");
+                b.Property<int>("Category4Gain")
+                   .IsRequired()
+                   .HasColumnType("int");
+
+                b.HasKey("Id");
+
+                b.ToTable("PointRules");
+            });
+
+            modelBuilder.Entity("Models.Point.Point", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                b.Property<string>("UserEmail")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("StoreEmail")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<int>("TotalPoint")
+                    .IsRequired()
+                    .HasColumnType("int");
+                b.Property<int>("TotalGained")
+                   .IsRequired()
+                   .HasColumnType("int");
+               
+
+                b.HasKey("Id");
+
+                b.ToTable("Points");
             });
 
             modelBuilder.Entity("Models.Store.Store", b =>

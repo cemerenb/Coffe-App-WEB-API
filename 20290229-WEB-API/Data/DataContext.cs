@@ -4,6 +4,8 @@ using Models.Cart;
 using Models.Menu;
 using Models.Order;
 using Models.OrderDetail;
+using Models.Point;
+using Models.PointRule;
 using Models.Rating;
 using Models.Store;
 using Models.User;
@@ -31,5 +33,8 @@ namespace cemerenbwebapi.Data
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<Cart> Carts => Set<Cart>();
         public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
+        public DbSet<PointRule> PointRules => Set<PointRule>();
+
+        public DbSet<Point> Points => Set<Point>();
     }
 }
