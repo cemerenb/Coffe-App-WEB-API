@@ -40,14 +40,12 @@ namespace cemerenbwebapi.Controllers
             var rating = new Rating
             {
                 StoreEmail = request.StoreEmail,
-                StoreName = request.StoreName,
                 OrderId = request.OrderId,
                 RatingId = CreateRandomToken(),
                 Comment = request.Comment,
                 IsRatingDisplayed = 1,
                 RatingPoint = request.RatingPoint,
                 UserEmail = request.UserEmail,
-                UserFullName = request.UserFullName,
                 RatingDate = request.RatingDate,
 
             };
@@ -59,23 +57,21 @@ namespace cemerenbwebapi.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateStore(StoreUpdateRequest request)
+        public async Task<IActionResult> UpdateStore(UpdateRatings request)
         {
-            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
-            if (store == null)
+            var rate = await _context.Ratings.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail && u.RatingId == request.RatingId );
+            if (rate == null)
             {
-                return NotFound("Store not found.");
+                return NotFound("Rating not found.");
             }
 
+            rate.IsRatingDisplayed = request.IsRatingDisplayed;
+            rate.RatingDisabledComment = request.RatingDisabledComment;
 
-            store.StoreLogoLink = request.StoreLogoLink;
-            store.StoreOpeningTime = request.StoreOpeningTime;
-            store.StoreClosingTime = request.StoreClosingTime;
-
-            _context.Stores.Update(store);
+            _context.Ratings.Update(rate);
             await _context.SaveChangesAsync();
 
-            return Ok("Store updated successfully!");
+            return Ok("Rating updated successfully!");
         }
 
        

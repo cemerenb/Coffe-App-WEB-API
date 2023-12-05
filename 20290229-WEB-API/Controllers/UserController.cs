@@ -21,7 +21,7 @@ namespace cemerenbwebapi.Controllers
         }
 
         [HttpGet("get-users-name")]
-        public IActionResult DeleteMenuItem([FromQuery] string email)
+        public IActionResult GetUserName([FromQuery] string email)
         {
             var user = _context.Users.FirstOrDefault(x => x.Email == email);
           
@@ -32,6 +32,8 @@ namespace cemerenbwebapi.Controllers
             
             return Ok(user.FullName);
         }
+
+        
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterRequest request)

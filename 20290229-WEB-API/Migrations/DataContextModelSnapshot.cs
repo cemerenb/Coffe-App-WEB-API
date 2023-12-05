@@ -168,17 +168,13 @@ namespace cemerenbwebapi.Migrations
                     .IsRequired()
                     .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("StoreName")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+               
 
                 b.Property<string>("UserEmail")
                     .IsRequired()
                     .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("UserFullName")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                
 
                 b.HasKey("Id");
 
