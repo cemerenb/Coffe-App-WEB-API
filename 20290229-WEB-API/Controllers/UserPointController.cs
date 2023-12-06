@@ -19,7 +19,13 @@ namespace cemerenbwebapi.Controllers
         }
 
 
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetUserPoints()
+        {
 
+            var user = await _context.Points.ToListAsync();
+            return Ok(user);
+        }
 
 
         [HttpPost("create-user-point")]

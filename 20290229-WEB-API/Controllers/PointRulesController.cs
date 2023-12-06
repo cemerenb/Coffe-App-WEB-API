@@ -18,8 +18,14 @@ namespace cemerenbwebapi.Controllers
             _context = context;
         }
 
-        
 
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetRules()
+        {
+
+            var rule = await _context.PointRules.ToListAsync();
+            return Ok(rule);
+        }
 
 
         [HttpPost("add-point-rule")]
@@ -49,7 +55,23 @@ namespace cemerenbwebapi.Controllers
             return Ok("Rules successfully saved");
 
         }
+        [HttpPut("toggle-loyalty-status")]
+        public async Task<IActionResult> ToggleIsActive(ToggleLoyaltyStatus request)
+        {
+            var rule = await _context.PointRules.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
+            if (rule == null)
+            {
+                return NotFound("Store don't have rule.");
+            }
 
+
+            rule.IsPointsEnabled = request.IsPointsEnabled;
+
+            _context.PointRules.Update(rule);
+            await _context.SaveChangesAsync();
+
+            return Ok("Loyalty status changed successfully!");
+        }
         [HttpPut("update")]
         public async Task<IActionResult> UpdateRules(UpdatePointRules request)
         {
