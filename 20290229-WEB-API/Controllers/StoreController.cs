@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Cryptography;
 
 namespace cemerenbwebapi.Controllers
@@ -115,7 +117,7 @@ namespace cemerenbwebapi.Controllers
             return Ok($"Welcome back, {store.StoreEmail}!");
         }
 
-     
+
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> StoreForgotPassword(string email)
@@ -126,11 +128,31 @@ namespace cemerenbwebapi.Controllers
                 return BadRequest("Store not found.");
             }
 
-            store.StorePasswordResetToken = CreateRandomToken();
-            store.StoreResetTokenExpires = DateTime.Now.AddDays(1);
+            // Generate a random token
+            var resetToken = CreateRandomToken2();
+
+            // Set the password reset token and expiration time in the database
+            store.StorePasswordResetToken = resetToken;
+            store.StoreResetTokenExpires = DateTime.Now.AddMinutes(5);
             await _context.SaveChangesAsync();
 
-            return Ok("You may now reset your password.");
+            // Send the password reset email
+            await SendPasswordResetEmail(store.StoreEmail, resetToken);
+
+            return Ok("Your reset token sent to your email account. Please check spam folder also.");
+        }
+
+
+        [HttpPost("check-reset-token")]
+        public async Task<IActionResult> CheckResetToken(StoreCheckToken request)
+        {
+            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StorePasswordResetToken == request.StorePasswordResetToken && u.StoreEmail == request.StoreEmail);
+            if (store == null || store.StoreResetTokenExpires < DateTime.Now)
+            {
+                return BadRequest("Invalid Token.");
+            }
+
+            return Ok("Token is valid.");
         }
 
         [HttpPost("reset-password")]
@@ -151,11 +173,43 @@ namespace cemerenbwebapi.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Password successfully reset.");
+            return Ok($"Password successfully reset. {store.StorePasswordResetToken}");
         }
 
-        
+        private async Task SendPasswordResetEmail(string email, string resetToken)
+        {
+            // Configure your SMTP server settings
+            var smtpClient = new SmtpClient("smtp-relay.brevo.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("200704020@st.maltepe.edu.tr", "jEy2JnhRzLDxcX5V"),
+                EnableSsl = true,
+            };
 
+            // Create the email message
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("200704020@st.maltepe.edu.tr"),
+                Subject = "Password Reset",
+                Body = GetPasswordResetEmailBody(resetToken,email),
+                IsBodyHtml = false,
+            };
+
+            // Add the recipient's email address
+            mailMessage.To.Add(email);
+
+            try
+            {
+                // Send the email
+                await smtpClient.SendMailAsync(mailMessage);
+                Console.WriteLine("Password reset email sent successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to send password reset email. Error: {ex.Message}");
+            }
+        }
+        
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -179,6 +233,48 @@ namespace cemerenbwebapi.Controllers
         private string CreateRandomToken()
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(4));
+        }
+        private string CreateRandomToken2()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(3));
+        }
+        private string GetPasswordResetEmailBody(string resetToken, string email)
+        {
+            // Your HTML template goes here
+            var htmlBody = $@"
+        <!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Password Reset</title>
+</head>
+<body>
+    <div class=""container"" style=""max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin-top: 20px; text-align: center; font-family: 'Arial', sans-serif; background-color: #f8f8f8; margin: 0; padding: 0;"">
+        <img src=""https://i.ibb.co/KzM2Qs4/coffee-logo-wide.png"" alt=""Coffeee"" class=""logo"" style=""max-width: 100%; height: auto; margin-bottom: 20px;"">
+        <h1 style=""color: #4e4e4e;"">Password Reset</h1>
+        <p style=""color: #666666; margin-bottom: 20px;"">Hello {email},</p>
+        <p style=""color: #666666; margin-bottom: 20px;"">We received a request to reset your password. To proceed, please click the button below:</p>
+
+        <p style=""margin-bottom: 70px; margin-top: 70px;"">
+            <a style=""display: inline-block; padding: 10px 20px; background-color: #2c3e50; color: #ffffff; text-decoration: none; border-radius: 5px;"">{resetToken}</a>
+        </p>
+
+        <p style=""color: #666666;"">If you didn't request a password reset, you can ignore this email. The link is valid for a limited time for security reasons.</p>
+
+        <p>Thank you for choosing Coffeee!</p>
+    </div>
+
+    <div class=""footer"" style=""margin-top: 20px; text-align: center; color: #888888;"">
+        <p>This email was sent from Coffeee. &copy; 2023 Coffeee. All rights reserved.</p>
+    </div>
+</body>
+</html>
+
+
+";
+
+            return htmlBody;
         }
     }
 }
