@@ -230,10 +230,7 @@ namespace cemerenbwebapi.Controllers
             }
         }
 
-        private string CreateRandomToken()
-        {
-            return Convert.ToHexString(RandomNumberGenerator.GetBytes(4));
-        }
+        
         private string CreateRandomToken2()
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(3));

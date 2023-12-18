@@ -7,6 +7,7 @@ using Models.User;
 using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography;
+using Models.Token;
 
 namespace cemerenbwebapi.Controllers
 {
@@ -194,6 +195,58 @@ namespace cemerenbwebapi.Controllers
             }
         }
 
+        public string GetUserEmailFromAccessToken(string accessToken)
+        {
+            var token = _context.Tokens.FirstOrDefault(t => t.AccessToken == accessToken);
+
+            if (token == null)
+            {
+                
+                return "-1";
+            }
+
+            if (token.AccessTokenExpires < DateTime.Now)
+            {
+                if (token.RefreshTokenExpires < DateTime.Now)
+                {
+                    // Both access and refresh tokens are expired; delete the token data
+                    _context.Tokens.Remove(token);
+                    _context.SaveChanges();
+                    return "-2";
+                }
+
+                // Access token expired, but refresh token is valid
+                token.AccessToken = CreateUserToken();
+                token.AccessTokenExpires = DateTime.Now.AddDays(1);
+                _context.SaveChanges();
+                return token.Email;
+            }
+
+            // Access token is still valid
+            return token.Email;
+        }
+
+        public string GenerateAndSaveUserToken(string userEmail)
+        {
+            var newAccessToken = CreateUserToken();
+
+            var token = new Token
+            {
+                Email = userEmail,
+                AccessToken = newAccessToken,
+                AccessTokenExpires = DateTime.Now.AddDays(1),
+                RefreshToken = CreateUserToken(),
+                RefreshTokenExpires = DateTime.Now.AddDays(5),
+            };
+
+            _context.Tokens.Add(token);
+            _context.SaveChanges();
+
+            return newAccessToken;
+        }
+
+
+
         private string CreateRandomToken()
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(4));
@@ -201,6 +254,10 @@ namespace cemerenbwebapi.Controllers
         private string CreateRandomToken2()
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(3));
+        }
+        private string CreateUserToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(8));
         }
         private string GetPasswordResetEmailBody(string resetToken, string email)
         {

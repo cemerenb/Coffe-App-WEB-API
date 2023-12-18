@@ -8,6 +8,7 @@ using Models.Point;
 using Models.PointRule;
 using Models.Rating;
 using Models.Store;
+using Models.Token;
 using Models.User;
 
 namespace cemerenbwebapi.Data
@@ -34,7 +35,7 @@ namespace cemerenbwebapi.Data
         public DbSet<Cart> Carts => Set<Cart>();
         public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
         public DbSet<PointRule> PointRules => Set<PointRule>();
-
         public DbSet<Point> Points => Set<Point>();
+        public DbSet<Token> Tokens => Set<Token>();
     }
 }

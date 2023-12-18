@@ -344,6 +344,39 @@ namespace cemerenbwebapi.Migrations
                 b.ToTable("Users");
             });
 
+            modelBuilder.Entity("Models.Token.Token", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("AccessToken")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<DateTime?>("AccessTokenExpires")
+                    .HasColumnType("datetime2");
+
+                b.Property<string>("RefreshToken")
+                    .HasColumnType("nvarchar(max)");
+
+
+                b.Property<DateTime?>("RefreshTokenExpires")
+                    .HasColumnType("datetime2");
+
+               
+
+                b.HasKey("Id");
+
+                b.ToTable("Tokens");
+            });
+
+
             modelBuilder.Entity("Models.OrderDetail.OrderDetail", b =>
             {
                 b.Property<int>("Id")
