@@ -9,8 +9,8 @@ namespace Models.Store
         [Required]
         public int StoreIsOn { get; set; }
 
-        [Required, EmailAddress]
-        public string StoreEmail { get; set; } = string.Empty;
+        [Required]
+        public string AccessToken { get; set; } = string.Empty;
 
          
 

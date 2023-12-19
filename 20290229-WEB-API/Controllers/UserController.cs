@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography;
 using Models.Token;
+using Azure.Core;
 
 namespace cemerenbwebapi.Controllers
 {
@@ -17,10 +18,13 @@ namespace cemerenbwebapi.Controllers
     public class UserController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public UserController(DataContext context)
+        public UserController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            
+            _tokenService = tokenService;
         }
 
         [HttpGet("get-users-name")]
@@ -35,6 +39,8 @@ namespace cemerenbwebapi.Controllers
             
             return Ok(user.FullName);
         }
+
+
 
         
 
@@ -79,9 +85,9 @@ namespace cemerenbwebapi.Controllers
                 return BadRequest("Password is incorrect.");
             }
 
-            
+            string AccessToken = _tokenService.GenerateAndSaveUserToken(user.Email);
 
-            return Ok($"Welcome back, {user.Email}! :)");
+            return Ok(AccessToken);
         }
 
 
@@ -97,7 +103,7 @@ namespace cemerenbwebapi.Controllers
             }
 
             // Generate a random token
-            var resetToken = CreateRandomToken2();
+            var resetToken = CreateRandomToken(3);
 
             // Set the password reset token and expiration time in the database
             user.PasswordResetToken = resetToken;
@@ -195,70 +201,15 @@ namespace cemerenbwebapi.Controllers
             }
         }
 
-        public string GetUserEmailFromAccessToken(string accessToken)
+       
+
+
+        private string CreateRandomToken(int lenght)
         {
-            var token = _context.Tokens.FirstOrDefault(t => t.AccessToken == accessToken);
-
-            if (token == null)
-            {
-                
-                return "-1";
-            }
-
-            if (token.AccessTokenExpires < DateTime.Now)
-            {
-                if (token.RefreshTokenExpires < DateTime.Now)
-                {
-                    // Both access and refresh tokens are expired; delete the token data
-                    _context.Tokens.Remove(token);
-                    _context.SaveChanges();
-                    return "-2";
-                }
-
-                // Access token expired, but refresh token is valid
-                token.AccessToken = CreateUserToken();
-                token.AccessTokenExpires = DateTime.Now.AddDays(1);
-                _context.SaveChanges();
-                return token.Email;
-            }
-
-            // Access token is still valid
-            return token.Email;
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(lenght));
         }
-
-        public string GenerateAndSaveUserToken(string userEmail)
-        {
-            var newAccessToken = CreateUserToken();
-
-            var token = new Token
-            {
-                Email = userEmail,
-                AccessToken = newAccessToken,
-                AccessTokenExpires = DateTime.Now.AddDays(1),
-                RefreshToken = CreateUserToken(),
-                RefreshTokenExpires = DateTime.Now.AddDays(5),
-            };
-
-            _context.Tokens.Add(token);
-            _context.SaveChanges();
-
-            return newAccessToken;
-        }
-
-
-
-        private string CreateRandomToken()
-        {
-            return Convert.ToHexString(RandomNumberGenerator.GetBytes(4));
-        }
-        private string CreateRandomToken2()
-        {
-            return Convert.ToHexString(RandomNumberGenerator.GetBytes(3));
-        }
-        private string CreateUserToken()
-        {
-            return Convert.ToHexString(RandomNumberGenerator.GetBytes(8));
-        }
+        
+        
         private string GetPasswordResetEmailBody(string resetToken, string email)
         {
             // Your HTML template goes here

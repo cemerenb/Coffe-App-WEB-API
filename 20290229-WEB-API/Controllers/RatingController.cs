@@ -12,10 +12,13 @@ namespace cemerenbwebapi.Controllers
     public class RatingController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public RatingController(DataContext context)
+
+        public RatingController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpGet("get-all")]
@@ -30,6 +33,15 @@ namespace cemerenbwebapi.Controllers
         [HttpPost("add-rating")]
         public async Task<IActionResult> AddRating(AddRatings request)
         {
+            string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (UserEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (UserEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             if (_context.Ratings.Any(u => u.OrderId == request.OrderId))
             {
                 return BadRequest("This order already commented");
@@ -45,7 +57,7 @@ namespace cemerenbwebapi.Controllers
                 Comment = request.Comment,
                 IsRatingDisplayed = 1,
                 RatingPoint = request.RatingPoint,
-                UserEmail = request.UserEmail,
+                UserEmail = UserEmail,
                 RatingDate = request.RatingDate,
 
             };
@@ -59,7 +71,16 @@ namespace cemerenbwebapi.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> UpdateStore(UpdateRatings request)
         {
-            var rate = await _context.Ratings.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail && u.RatingId == request.RatingId );
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
+            var rate = await _context.Ratings.FirstOrDefaultAsync(u => u.StoreEmail == StoreEmail && u.RatingId == request.RatingId );
             if (rate == null)
             {
                 return NotFound("Rating not found.");

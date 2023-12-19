@@ -12,10 +12,13 @@ namespace cemerenbwebapi.Controllers
     public class UserPointsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public UserPointsController(DataContext context)
+
+        public UserPointsController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
 
@@ -31,7 +34,16 @@ namespace cemerenbwebapi.Controllers
         [HttpPost("create-user-point")]
         public async Task<IActionResult> CreateUserPoint(CreateUserPointData request)
         {
-            if (_context.Points.Any(u => u.StoreEmail == request.StoreEmail && u.UserEmail == request.UserEmail))
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
+            if (_context.Points.Any(u => u.StoreEmail == StoreEmail && u.UserEmail == request.UserEmail))
             {
                 return BadRequest("This user already have points for this store");
             }
@@ -40,7 +52,7 @@ namespace cemerenbwebapi.Controllers
 
             var point = new Point
             {
-                StoreEmail = request.StoreEmail,
+                StoreEmail = StoreEmail,
                 UserEmail = request.UserEmail,
                 TotalPoint = request.TotalPoint,
                 TotalGained = request.TotalGained,
@@ -55,8 +67,18 @@ namespace cemerenbwebapi.Controllers
 
         [HttpPut("update")]
         public async Task<IActionResult> UpdateUserPoints(UpdateUserPoints request)
+
         {
-            var point = await _context.Points.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail && u.UserEmail == request.UserEmail);
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
+            var point = await _context.Points.FirstOrDefaultAsync(u => u.StoreEmail == StoreEmail && u.UserEmail == request.UserEmail);
             if (point == null)
             {
                 return NotFound("User don't have point for this store");

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Order;
+using Models.Token;
 using System.Security.Cryptography;
 
 namespace cemerenbwebapi.Controllers
@@ -14,10 +15,13 @@ namespace cemerenbwebapi.Controllers
     public class OrderController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public OrderController(DataContext context)
+
+        public OrderController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpGet("get-orders")]
@@ -28,8 +32,17 @@ namespace cemerenbwebapi.Controllers
         }
 
         [HttpGet("get-user-orders")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders([FromQuery] string UserEmail)
+        public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders([FromQuery] string AccessToken)
         {
+            string UserEmail =  _tokenService.GetUserEmailFromAccessToken(AccessToken);
+            if (UserEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (UserEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             if (string.IsNullOrEmpty(UserEmail))
             {
                 return BadRequest("User email parameter is required");
@@ -48,14 +61,26 @@ namespace cemerenbwebapi.Controllers
         }
 
         [HttpGet("get-store-orders")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetStoreOrders([FromQuery] string StoreEmail)
+        public async Task<ActionResult<IEnumerable<Order>>> GetStoreOrders([FromQuery] string AccessToken)
         {
+            System.Diagnostics.Debug.WriteLine("4");
+            System.Diagnostics.Debug.WriteLine(AccessToken);
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(AccessToken);
+            System.Diagnostics.Debug.WriteLine($"{StoreEmail}");
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
             if (string.IsNullOrEmpty(StoreEmail))
             {
                 return BadRequest("User email parameter is required");
             }
 
-            var orders = await _context.Orders
+            var orders =await  _context.Orders
                 .Where(o => o.StoreEmail == StoreEmail)
                 .ToListAsync();
 
@@ -71,12 +96,20 @@ namespace cemerenbwebapi.Controllers
         [HttpPost("create-order")]
         public async Task<IActionResult> CreateOrder(CreateOrder request)
         {
-
+            string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (UserEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (UserEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             var order = new Order
             {
                 StoreEmail = request.StoreEmail,
                 OrderId = request.OrderId,
-                UserEmail = request.UserEmail,
+                UserEmail = UserEmail,
                 OrderStatus = request.OrderStatus,
                 OrderNote = request.OrderNote,
                 OrderCreatingTime = request.OrderCreatingTime,

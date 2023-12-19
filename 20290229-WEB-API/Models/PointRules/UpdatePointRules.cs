@@ -6,8 +6,8 @@ namespace Models.PointRule
 {
         [Required]
         public int IsPointsEnabled { get; set; }
-        [Required, EmailAddress]
-        public String StoreEmail { get; set; } = String.Empty;
+        [Required]
+        public String AccessToken { get; set; } = String.Empty;
         [Required]
         public int PointsToGain { get; set; }
         [Required]

@@ -14,15 +14,27 @@ namespace cemerenbwebapi.Controllers
     public class MenuController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public MenuController(DataContext context)
+
+        public MenuController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost("create")]
         public IActionResult CreateMenuItem([FromBody] CreateMenuItemRequest request)
         {
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -31,7 +43,7 @@ namespace cemerenbwebapi.Controllers
             // Create a new menu item from the request
             var newItem = new Menu
             {
-                StoreEmail = request.StoreEmail,
+                StoreEmail = StoreEmail,
                 MenuItemName = request.MenuItemName,
                 MenuItemId = CreateRandomToken(),
                 MenuItemDescription = request.MenuItemDescription,
@@ -51,6 +63,15 @@ namespace cemerenbwebapi.Controllers
         [HttpPost("delete")]
         public IActionResult DeleteMenuItem([FromBody] DeleteMenuItemRequest request)
         {
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -58,7 +79,7 @@ namespace cemerenbwebapi.Controllers
 
             // Find the menu item to delete
             var itemToDelete = _context.Menus.FirstOrDefault(m =>
-                m.StoreEmail == request.StoreEmail && m.MenuItemId == request.MenuItemId);
+                m.StoreEmail == StoreEmail && m.MenuItemId == request.MenuItemId);
 
             if (itemToDelete == null)
             {
@@ -81,8 +102,17 @@ namespace cemerenbwebapi.Controllers
 
 
         [HttpPost("update")]
-        public IActionResult UpdateMenuItem([FromBody] CreateMenuItemRequest request)
+        public  IActionResult UpdateMenuItem([FromBody] CreateMenuItemRequest request)
         {
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -90,7 +120,7 @@ namespace cemerenbwebapi.Controllers
 
             // Find the menu item to update
             var itemToUpdate = _context.Menus.FirstOrDefault(m =>
-                m.StoreEmail == request.StoreEmail && m.MenuItemId == request.MenuItemId);
+                m.StoreEmail == StoreEmail && m.MenuItemId == request.MenuItemId);
 
             if (itemToUpdate == null)
             {

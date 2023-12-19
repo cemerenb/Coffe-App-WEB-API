@@ -16,10 +16,11 @@ namespace cemerenbwebapi.Controllers
     public class CartController : ControllerBase
     {
         private readonly DataContext _context;
-
-        public CartController(DataContext context)
+        private readonly TokenService _tokenService;
+        public CartController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpGet("get-all")]
@@ -27,7 +28,15 @@ namespace cemerenbwebapi.Controllers
         {
             try
             {
-                var matchedCarts = await _context.Carts.Where(u => u.UserEmail == request.UserEmail).ToListAsync();
+                string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+                if (UserEmail == "-2") {
+                    return StatusCode(210,"Refresh Token Expired");
+                }
+                if (UserEmail == "-3")
+                {
+                    return StatusCode(211, "Refresh Token Expired");
+                }
+                var matchedCarts = await _context.Carts.Where(u => u.UserEmail == UserEmail).ToListAsync();
 
                 if (matchedCarts != null && matchedCarts.Any())
                 {
@@ -49,7 +58,16 @@ namespace cemerenbwebapi.Controllers
         {
             try
             {
-                var matchedCart = await _context.Carts.Where(u => u.UserEmail == request.UserEmail && u.MenuItemId == request.MenuItemId).ToListAsync();
+                string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+                if (UserEmail == "-2")
+                {
+                    return StatusCode(210, "Refresh Token Expired");
+                }
+                if (UserEmail == "-3")
+                {
+                    return StatusCode(211, "Refresh Token Expired");
+                }
+                var matchedCart = await _context.Carts.Where(u => u.UserEmail == UserEmail && u.MenuItemId == request.MenuItemId).ToListAsync();
 
                 if (matchedCart != null && matchedCart.Any())
                 {
@@ -70,8 +88,17 @@ namespace cemerenbwebapi.Controllers
         {
             try
             {
+                string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+                if (UserEmail == "-2")
+                {
+                    return StatusCode(210, "Refresh Token Expired");
+                }
+                if (UserEmail == "-3")
+                {
+                    return StatusCode(211, "Refresh Token Expired");
+                }
                 var matchedCarts = await _context.Carts
-                    .Where(u => u.UserEmail == request.UserEmail && u.MenuItemId == request.MenuItemId)
+                    .Where(u => u.UserEmail == UserEmail && u.MenuItemId == request.MenuItemId)
                     .ToListAsync();
 
                 if (matchedCarts == null || matchedCarts.Count == 0)
@@ -99,6 +126,15 @@ namespace cemerenbwebapi.Controllers
         [HttpPost("add")]
         public IActionResult AddToCart([FromBody] AddToCart request)
         {
+            string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (UserEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (UserEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -109,7 +145,7 @@ namespace cemerenbwebapi.Controllers
             {
                 
                 StoreEmail = request.StoreEmail,
-                UserEmail = request.UserEmail,
+                UserEmail = UserEmail,
                 MenuItemId = request.MenuItemId,
                 ItemCount = 1,
 
@@ -122,8 +158,17 @@ namespace cemerenbwebapi.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult DeleteMenuItem([FromBody] DeleteFromCart request)
+        public async Task<IActionResult> DeleteMenuItem([FromBody] DeleteFromCart request)
         {
+            string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (UserEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (UserEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -131,7 +176,7 @@ namespace cemerenbwebapi.Controllers
 
             // Find the menu item to delete
             var itemToDelete = _context.Carts.FirstOrDefault(m =>
-                m.StoreEmail == request.StoreEmail && m.MenuItemId == request.MenuItemId);
+                m.StoreEmail == request.StoreEmail && m.UserEmail == UserEmail && m.MenuItemId == request.MenuItemId);
 
             if (itemToDelete == null)
             {

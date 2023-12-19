@@ -14,23 +14,19 @@ namespace cemerenbwebapi.Controllers
     public class OrderDetailsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public OrderDetailsController(DataContext context)
+
+        public OrderDetailsController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpGet("get-order-details")]
         public async Task<ActionResult<IEnumerable<OrderDetail>>> GetUserOrders()
         {
-           
-
-            var orderdetails = await _context.OrderDetails
-                
-                .ToListAsync();
-
-            
-
+            var orderdetails = await _context.OrderDetails.ToListAsync();
             return orderdetails;
         }
 
@@ -39,8 +35,17 @@ namespace cemerenbwebapi.Controllers
         {
             try
             {
+                string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+                if (StoreEmail == "-2")
+                {
+                    return StatusCode(210, "Refresh Token Expired");
+                }
+                if (StoreEmail == "-3")
+                {
+                    return StatusCode(211, "Refresh Token Expired");
+                }
                 var matchedOrderItem = await _context.OrderDetails
-                    .Where(u => u.StoreEmail == request.StoreEmail && u.MenuItemId == request.MenuItemId && u.OrderId == request.OrderId)
+                    .Where(u => u.StoreEmail == StoreEmail && u.MenuItemId == request.MenuItemId && u.OrderId == request.OrderId)
                     .ToListAsync();
 
                 if (matchedOrderItem == null || matchedOrderItem.Count == 0)
@@ -66,12 +71,20 @@ namespace cemerenbwebapi.Controllers
         [HttpPost("create-order-details")]
         public async Task<IActionResult> CreateOrder(CreateOrderDetail request)
         {
-
+            string UserEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (UserEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (UserEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
             var orderDetails = new OrderDetail
             {
                 StoreEmail = request.StoreEmail,
                 OrderId = request.OrderId,
-                UserEmail = request.UserEmail,
+                UserEmail = UserEmail,
                 MenuItemId = request.MenuItemId,
                 ItemCount = request.ItemCount,
                 

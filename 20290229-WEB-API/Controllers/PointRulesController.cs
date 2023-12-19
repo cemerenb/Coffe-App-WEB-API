@@ -12,10 +12,13 @@ namespace cemerenbwebapi.Controllers
     public class PointRulesController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public PointRulesController(DataContext context)
+
+        public PointRulesController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
 
@@ -31,7 +34,16 @@ namespace cemerenbwebapi.Controllers
         [HttpPost("add-point-rule")]
         public async Task<IActionResult> AddPointRule(AddPointRule request)
         {
-            if (_context.PointRules.Any(u => u.StoreEmail == request.StoreEmail))
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
+            if (_context.PointRules.Any(u => u.StoreEmail == StoreEmail))
             {
                 return BadRequest("This store already defined rules");
             }
@@ -40,7 +52,7 @@ namespace cemerenbwebapi.Controllers
 
             var pointRules = new PointRule
             {
-                StoreEmail = request.StoreEmail,
+                StoreEmail = StoreEmail,
                 IsPointsEnabled = request.IsPointsEnabled,
                 PointsToGain = request.PointsToGain,
                 Category1Gain = request.Category1Gain,
@@ -58,7 +70,16 @@ namespace cemerenbwebapi.Controllers
         [HttpPut("toggle-loyalty-status")]
         public async Task<IActionResult> ToggleIsActive(ToggleLoyaltyStatus request)
         {
-            var rule = await _context.PointRules.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
+            var rule = await _context.PointRules.FirstOrDefaultAsync(u => u.StoreEmail == StoreEmail);
             if (rule == null)
             {
                 return NotFound("Store don't have rule.");
@@ -75,7 +96,16 @@ namespace cemerenbwebapi.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> UpdateRules(UpdatePointRules request)
         {
-            var rule = await _context.PointRules.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Refresh Token Expired");
+            }
+            var rule = await _context.PointRules.FirstOrDefaultAsync(u => u.StoreEmail == StoreEmail);
             if (rule == null)
             {
                 return NotFound("Store don't have point rules");

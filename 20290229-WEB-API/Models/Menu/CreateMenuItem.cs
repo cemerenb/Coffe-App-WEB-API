@@ -5,7 +5,7 @@ namespace Models.Menu
     public class CreateMenuItemRequest
     {
         [Required, EmailAddress]
-        public string StoreEmail { get; set; } = string.Empty;
+        public string AccessToken { get; set; } = string.Empty;
         [Required]
         public string MenuItemName { get; set; } = string.Empty;
         [Required]

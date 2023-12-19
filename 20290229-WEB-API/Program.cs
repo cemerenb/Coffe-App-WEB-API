@@ -11,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>();
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<Models.Token.Token>();
 
 // Enable CORS
 builder.Services.AddCors(options =>

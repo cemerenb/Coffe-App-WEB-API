@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography;
+using Models.User;
 
 namespace cemerenbwebapi.Controllers
 {
@@ -13,10 +14,13 @@ namespace cemerenbwebapi.Controllers
     public class StoreController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly TokenService _tokenService;
 
-        public StoreController(DataContext context)
+
+        public StoreController(DataContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpGet("get-all")]
@@ -59,7 +63,16 @@ namespace cemerenbwebapi.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> UpdateStore(StoreUpdateRequest request)
         {
-            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Access Token Expired");
+            }
+            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StoreEmail == StoreEmail);
             if (store == null)
             {
                 return NotFound("Store not found.");
@@ -84,7 +97,16 @@ namespace cemerenbwebapi.Controllers
         [HttpPut("toggle-store")]
         public async Task<IActionResult> ToggleIsActive(StoreToggleIsOn request)
         {
-            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StoreEmail == request.StoreEmail);
+            string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(request.AccessToken);
+            if (StoreEmail == "-2")
+            {
+                return StatusCode(210, "Refresh Token Expired");
+            }
+            if (StoreEmail == "-3")
+            {
+                return StatusCode(211, "Access Token Expired");
+            }
+            var store = await _context.Stores.FirstOrDefaultAsync(u => u.StoreEmail == StoreEmail);
             if (store == null)
             {
                 return NotFound("Store not found.");
@@ -113,8 +135,10 @@ namespace cemerenbwebapi.Controllers
             {
                 return BadRequest("Password is incorrect.");
             }
+            
+            string Token = _tokenService.GenerateAndSaveUserToken(store.StoreEmail);
 
-            return Ok($"Welcome back, {store.StoreEmail}!");
+            return Ok(Token);
         }
 
 

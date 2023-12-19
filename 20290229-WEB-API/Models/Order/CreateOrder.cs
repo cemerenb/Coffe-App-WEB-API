@@ -7,7 +7,7 @@ namespace Models.Order
         public string StoreEmail { get; set; } = string.Empty;
         public string OrderId { get; set; } = string.Empty;
 
-        public string UserEmail { get; set; } = string.Empty;
+        public string AccessToken { get; set; } = string.Empty;
         public int OrderStatus { get; set; }
         public string OrderNote { get; set; } = string.Empty;
 

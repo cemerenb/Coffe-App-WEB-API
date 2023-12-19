@@ -8,8 +8,8 @@ namespace Models.Store
 
        
 
-        [Required, EmailAddress]
-        public string StoreEmail { get; set; } = string.Empty;
+        [Required]
+        public string AccessToken { get; set; } = string.Empty;
 
         [Required]
         public string StoreLogoLink { get; set; } = string.Empty;
