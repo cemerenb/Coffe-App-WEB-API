@@ -63,18 +63,12 @@ namespace cemerenbwebapi.Controllers
         [HttpGet("get-store-orders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetStoreOrders([FromQuery] string AccessToken)
         {
-            System.Diagnostics.Debug.WriteLine("4");
-            System.Diagnostics.Debug.WriteLine(AccessToken);
             string StoreEmail =  _tokenService.GetUserEmailFromAccessToken(AccessToken);
-            System.Diagnostics.Debug.WriteLine($"{StoreEmail}");
             if (StoreEmail == "-2")
             {
                 return StatusCode(210, "Refresh Token Expired");
             }
-            if (StoreEmail == "-3")
-            {
-                return StatusCode(210, "Refresh Token Expired");
-            }
+            
             if (string.IsNullOrEmpty(StoreEmail))
             {
                 return BadRequest("User email parameter is required");
